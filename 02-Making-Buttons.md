@@ -1,8 +1,3 @@
-Below is a **proof-read and lightly polished** version with spelling, grammar, and minor accuracy fixes.
-(➜ Changes are inline; key corrections are **bolded**.)
-
----
-
 # Making Buttons
 
 The calculator needs some buttons—**20, in fact!** While the buttons are mostly the same, they also differ:

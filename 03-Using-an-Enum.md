@@ -1,71 +1,65 @@
 # Using an Enum
 
-To really get organized we can use an enum. An enum is a construct that is used when you have a fixed set of choices. Its often a better choice than using strings or numbers. Enums are descriptive which makes it easier for you to write, and are recognized by the compiler and code editor, which catches errors. 
+To keep the code organized, we can use an **enum**. An enum is ideal when you have a **fixed set of choices**. It’s usually better than hard-coding strings or numbers because:
 
-Since there are a fixed number of keys on calculator and each key will be referenced in a few places an enum make s a good choice to represent the keys. 
+* The cases are **descriptive**, which makes your code easier to read.
+* The compiler and code editor understand them, so typos are caught at build-time.
 
-Add a new swift file, named CalcKeys. 
+A calculator has a fixed number of keys, and each key will be referenced in several places, so an enum is a perfect fit.
 
-Write an enum to represent all of the keys: 
+---
 
-```Swift 
+## 1. Create an enum for the keys
+
+Add a new Swift file named **`CalcKey.swift`** and define:
+
+```swift
 enum CalcKey: String {
-  case clear = "C"
-  case decimal = "."
-  case divide = "÷"
-  case multiply = "×"
-  case subtract = "-"
-  case plusMinus = "+/-"
-  case percent = "%"
-  case add = "+"
-  case equals = "="
-  case one = "1"
-  case two = "2"
-  case three = "3"
-  case four = "4"
-  case five = "5"
-  case six = "6"
-  case seven = "7"
-  case eight = "8"
-  case nine = "9"
-  case zero = "0"
+    case clear      = "C"
+    case decimal    = "."
+    case divide     = "÷"
+    case multiply   = "×"
+    case subtract   = "−"
+    case plusMinus  = "±"
+    case percent    = "%"
+    case add        = "+"
+    case equals     = "="
+    
+    case one   = "1", two   = "2", three = "3"
+    case four  = "4", five  = "5", six   = "6"
+    case seven = "7", eight = "8", nine  = "9"
+    case zero  = "0"
 }
 ```
 
-Modify `makeButton()`, this needs a parameter to accept the enum case for each of the keys. 
+---
 
-```Swift
-// Add key: Calckeys as a parameter
-func makeButton(key: CalcKeys) -> some View {
-    return Button {
-      print("Tapped Hello World")
+## 2. Update `makeButton`
+
+Add a parameter so `makeButton` knows which key to display:
+
+```swift
+func makeButton(key: CalcKey) -> some View { // add a parameter for the key
+    Button {
+        print("Tapped \(key.rawValue)") // display the key when tapped
     } label: {
-        Text(key.rawValue) // use the rawvalue of key for the label
-          .font(.system(size: 40))
-            .frame(width: 80, height: 80, alignment: .center)
-              .foregroundColor(.white)
-                .background(.gray)
-                  .cornerRadius(40)
-      }
+        Text(key.rawValue)            // use the enum’s raw value for the label
+            .font(.system(size: 40))
+            .frame(width: 80, height: 80)
+            .foregroundColor(.white)
+            .background(Color.gray)
+            .cornerRadius(40)
+    }
 }
 ```
 
-Now modify the display code to show the first row of buttons. The first row should show: Clear, +/-, %, and ÷. 
+---
 
-You started with: 
+## 3. Build the first row
 
-```Swift
-HStack {
-    makeButton()
-    makeButton()
-    makeButton()
-    makeButton()
-}
-```
+Replace your original placeholder `HStack` with concrete keys:
 
-Which now becomes: 
-
-```Swift
+```swift
 HStack {
     makeButton(key: .clear)
     makeButton(key: .plusMinus)
@@ -74,12 +68,27 @@ HStack {
 }
 ```
 
-Challenge set up the rest of the keys. The keys should be arranged like this: 
+---
 
-|     |     |     |     |
-|:---:|:---:|:---:|:---:|
-| C   | +/- | %   | ÷   |
-| 7   | 8   | 9   | ×   |
-| 4   | 5   | 6   | -   |
-| 1   | 2   | 3   | +   |
-| 0   | .   | =   |     | 
+## 4. **Challenge:** add the remaining rows
+
+Arrange the keys like this:
+
+| C | ± | % | ÷ |
+| - | - | - | - |
+| 7 | 8 | 9 | × |
+| 4 | 5 | 6 | − |
+| 1 | 2 | 3 | + |
+| 0 | . | = |   |
+
+*Note:* In the classic calculator, the **0** key spans two columns. Modern iOS adds a “mode” button in the blank space; we’ll handle that later.
+
+---
+
+### Summary
+
+* **Enums** give you type-safe, self-documenting keys.
+* `makeButton(key:)` now takes a single enum case and uses its `rawValue` for the label.
+* Building the UI with `VStack` + `HStack` keeps the layout clear and concise.
+
+Keep going—once all the rows are in place, you’ll have the full calculator keypad!
