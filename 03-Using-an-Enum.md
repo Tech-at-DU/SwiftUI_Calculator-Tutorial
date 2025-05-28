@@ -76,8 +76,9 @@ HStack {
 
 Challenge set up the rest of the keys. The keys should be arranged like this: 
 
-| C | +/- | % | ÷ |
-| 7 | 8   | 9 | × |
-| 4 | 5   | 6 | - |
-| 1 | 2   | 3 | + |
-| 0 | . | = | | 
+|:---:|:---:|:---:|:---:|
+| C   | +/- | %   | ÷   |
+| 7   | 8   | 9   | ×   |
+| 4   | 5   | 6   | -   |
+| 1   | 2   | 3   | +   |
+| 0   | .   | =   |     | 
