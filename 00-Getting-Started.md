@@ -10,4 +10,4 @@ If it isn’t already installed, open the **Mac App Store** and install the late
 If you plan to develop software for Apple devices, learning Xcode is essential.  
 Download and install it before proceeding.
 
-You can download and install Xcode on the Apple App Store. 
+**You can download and install Xcode on the Apple App Store.** 
