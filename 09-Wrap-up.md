@@ -22,21 +22,22 @@ For robust behaviour—especially when you add `%`, `±`, parentheses, history, 
 
 ```swift
 enum Token: CustomStringConvertible {
-    case number(Double)
-    case op(CalcKey)
-
-    /// For debugging & building `display`
-    var description: String {
-        switch self {
-        case .number(let v):
-            // Show integers without “.0”
-            return v.truncatingRemainder(dividingBy: 1) == 0
-                   ? String(Int(v))
-                   : String(v)
-        case .op(let k):
-            return k.rawValue
-        }
+  case number(String)
+  case op(CalcKey)
+  
+  var description: String {
+    switch self {
+    case .number(let str):
+      return str
+    case .op(let key):
+      return key.rawValue
     }
+  }
+  
+  var doubleValue: Double? {
+    guard case .number(let string) = self else { return nil }
+    return Double(string)
+  }
 }
 ```
 
@@ -53,52 +54,57 @@ var display: String { tokens.map(\.description).joined() }
 
 ```swift
 func keyPressed(_ key: CalcKey) {
+    print(tokens)
+    
     switch key {
-
-    // digits
+      
+      // digits
     case .zero, .one, .two, .three, .four,
-         .five, .six, .seven, .eight, .nine:
-        appendDigit(key)
-
-    // operators
+        .five, .six, .seven, .eight, .nine:
+      appendDigit(key)
+      
+      // operators
     case .add, .subtract, .multiply, .divide:
-        replaceOrAppend(.op(key))
-
+      replaceOrAppend(.op(key))
+      
     case .decimal:
-        // TODO:
-        appendDecimal()
-
+      appendDecimal()
+      
     case .percent:
-        // TODO:
-        applyPercent()
-
+      //      applyPercent()
+      print("% no implemented")
+      
     case .plusMinus:
-        // TODO:
-        toggleSign()
-
+      //      toggleSign()
+      print("+/- not implemented")
+      
     case .clear:
-        tokens = [.number(0)]
-
+      tokens = [.number("0")]
+      
     case .equals:
-        let result = evaluateTokens()
-        tokens = [.number(result)]
+      let result = evaluateTokens()
+      let text = fomrat(result)
+      tokens = [.number(String(text))]
     }
-}
+  }
 ```
 
 #### Helper snippets
 
 ```swift
-/// Append a digit to the current number or start a new number.
-private func appendDigit(_ key: CalcKey) {
-    guard case .number(let current) = tokens.last else {
-        tokens.append(.number(Double(key.rawValue)!))
-        return
+/// Add a decimal to the current number
+private func appendDecimal(_ digit: String) {
+
+    if case .number(var text) = tokens.last! {
+        if text == "0" && !text.contains(".") {
+        text = digit
+        } else {
+        text += digit
+        }
+        tokens[tokens.count - 1] = .number(text)
+    } else {
+        tokens.append(.number(digit))
     }
-    let newValue = current == 0
-        ? Double(key.rawValue)!                     // replace leading zero
-        : Double("\(Int(current))\(key.rawValue)")! // concatenate digits
-    tokens[tokens.count - 1] = .number(newValue)
 }
 
 /// Replace trailing operator or append a new one.
@@ -149,6 +155,4 @@ private func evaluateTokens() -> Double {
 
 ### Next steps
 
-* Finish `appendDecimal`, `toggleSign`, and `applyPercent` using the token model.
-* Use `NumberFormatter` to strip trailing `.0` or round to 6 decimal places.
-* Add unit tests: feed sequences like `["2","2","÷","7","="]` and assert the display.
+The code here is incomplete, you'll need to do some work to finish it up. The idea is to keep a list of "tokens" representing the math expression you are building.
