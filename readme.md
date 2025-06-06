@@ -22,3 +22,4 @@ You will learn:
 - [Observable](./06-Observable.md)
 - [Calculator Logic](./07-Calculator-Logic.md)
 - [Creating and Evaluating Expressions](./08-Creating-and-evaluating-expressions.md)
+- [Wrap up](./09-Wrap-up.md)
